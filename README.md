@@ -1,4 +1,4 @@
-# Build Week Scaffolding
+# Build Week Scaffolding.
 
 First READ these instructions to get an overview of what's involved in scaffolding an Express + PostgreSQL app that deploys to Heroku.
 
