@@ -10,6 +10,11 @@ server.use(helmet())
 server.use(cors())
 server.use('/api/students', studentRouter)
 
-
+server.use((err, req, res, next) => {
+  res.status(err.status || 500).json({
+    message: err.message,
+    stack: err.stack,
+  });
+});
 
 module.exports = server
