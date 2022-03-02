@@ -4,6 +4,11 @@ function getClasses() {
     return db('classes');
 }
 
+function getClassById(class_id) {
+    return db('classes')
+    .where('class_id', class_id);
+}
+
 
 // function getAllUsers() { return db('users') }
 
@@ -30,4 +35,5 @@ function getClasses() {
 
 module.exports = {
     getClasses,
+    getClassById
 }

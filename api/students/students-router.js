@@ -46,7 +46,11 @@ router.get('/classes', (req, res, next) => {
   ]
  */
 router.get('/class/:class_id', (req, res, next) => {
-    console.log('get class by id is wired')
+    Students.getClassById(req.params.class_id)
+    .then(selectedClass => {
+        res.json(selectedClass)
+    })
+    .catch(next)
 });
 
 // [GET] /api/student_id/classes
