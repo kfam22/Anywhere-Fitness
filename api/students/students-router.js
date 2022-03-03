@@ -5,7 +5,11 @@ const getToken = require('./getStudentToken');
 const { 
     checkUsernameExists,
     checkUsernameAvailable,
-    validateUser } = require('./students-middleware')
+    validateUser,
+    restricted,
+    only,
+    validateAddResv,
+    checkClassFull } = require('./students-middleware')
 // const { restricted, only } = require("../auth/auth-middleware.js");
 
 // [POST] students/register
@@ -73,7 +77,7 @@ router.get('/classes/:class_id', (req, res, next) => {
 //   should have access.
 // client role only
 router.get('/:student_id/classes', (req, res, next) => {
-    Student.getAllRes(req.params.student_id)
+    Student.getAllResv(req.params.student_id)
     .then(reservations => {
         res.json(reservations)
     })
@@ -82,9 +86,23 @@ router.get('/:student_id/classes', (req, res, next) => {
 
 // [POST] /api/register/:class_id
 // restricted/ only authd students can register
-router.post('/register/:class_id', (req, res, next) => {
-    console.log('student register for class is wired')
+router.post('/add/:class_id', 
+restricted, 
+only('student'), 
+validateAddResv, 
+checkClassFull, (req, res, next) => {
+    const student_id = req.decodedToken.student_id;
+    const class_id = req.params.class_id;
+
+    Student.addResv(student_id, class_id)
+    .then(resvClass => {
+        res.json({
+            message: `reservation for ${resvClass.class_name} successful`
+        })
+    })
+    .catch(next)
 })
+// ^^^student can only register for the same class once(add middleware)
 
 
 // [POST] /api/remove/:class_id

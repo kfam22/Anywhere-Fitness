@@ -10,6 +10,7 @@
   class_duration: 90,
   class_level: 'intermediate',
   class_location: 'uptown studio',
+  total_students: 5,
   max_students: 12,
   instructor_id: 1
 },
@@ -20,6 +21,7 @@
   class_duration: 35,
   class_level: 'beginner',
   class_location: 'uptown studio',
+  total_students: 4,
   instructor_id: 2
 },
 { 
@@ -29,6 +31,7 @@
   class_duration: 60,
   class_level: 'beginner',
   class_location: 'uptown studio',
+  total_students: 2,
   max_students: 10,
   instructor_id: 1
 },
@@ -39,6 +42,7 @@
   class_duration: 120,
   class_level: 'advanced',
   class_location: 'downtown studio',
+  total_students: 4,
   instructor_id: 2
 },
 { 
@@ -48,7 +52,8 @@
   class_duration: 85,
   class_level: 'advanced',
   class_location: 'downtown studio',
-  max_students: 12,
+  total_students: 2,
+  max_students: 2,
   instructor_id: 1
 },
 ]

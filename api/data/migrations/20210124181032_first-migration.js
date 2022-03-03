@@ -20,6 +20,7 @@ exports.up = async (knex) => {
       classes.integer('class_duration').notNullable()
       classes.string('class_level', 50).notNullable()
       classes.string('class_location', 50).notNullable()
+      classes.integer('total_students').defaultTo(0)
       classes.integer('max_students').notNullable().defaultTo(8)
       classes.integer('instructor_id')
       .unsigned()

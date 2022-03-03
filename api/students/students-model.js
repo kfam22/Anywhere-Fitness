@@ -6,7 +6,8 @@ function getClasses() {
 
 function findClassById(class_id) {
     return db('classes')
-    .where('class_id', class_id);
+    .where('class_id', class_id)
+    .first();
 }
 
 function findBy(user) {
@@ -23,10 +24,37 @@ async function insertStudent(student) {
   return newStudent // { user_id: 7, username: 'foo', password: 'xxxxxxx' }
 }
 
-async function getAllRes(student_id) {
+async function getAllResv(student_id) {
     return await db('classes as c')
     .join('reservations as r', 'c.class_id', 'r.class_id')
     .where('r.student_id', student_id)
+}
+
+async function addResv(student_id, class_id) {
+    const resvDetails = { student_id, class_id }
+    const [ newResv ] = await db('reservations').insert(resvDetails, ['reservation_id', 'class_id'])
+    
+    let resvClass = await db('classes')
+    .where('class_id', newResv.class_id)
+    .first()
+
+    const newClassTotal = await db('reservations').where('class_id', class_id)
+
+    await db('classes')
+    .where('class_id', class_id)
+    .update('total_students', resvClass.total_students = newClassTotal.length)
+
+    return db('classes')
+        .select(
+            'class_id',
+            'class_name',
+            'class_category',
+            'class_start_time',
+            'class_duration',
+            'total_students'
+        )
+        .where('class_id', newResv.class_id)
+        .first()
 }
 
 
@@ -39,5 +67,6 @@ module.exports = {
     findClassById,
     findBy,
     insertStudent,
-    getAllRes,
+    getAllResv,
+    addResv
 }
