@@ -2,11 +2,14 @@ const router = require('express').Router();
 const Student = require('./students-model.js');
 const bcrypt = require('bcryptjs');
 const getToken = require('./getStudentToken');
-const { checkUsernameExists } = require('./students-middleware')
+const { 
+    checkUsernameExists,
+    checkUsernameAvailable,
+    validateUser } = require('./students-middleware')
 // const { restricted, only } = require("../auth/auth-middleware.js");
 
 // [POST] students/register
-router.post('/register', (req, res, next) =>{
+router.post('/register', validateUser, checkUsernameAvailable, (req, res, next) =>{
     const { username, password } = req.body
     const hash = bcrypt.hashSync(password, 8)
     Student.insertStudent({ username, password: hash})
@@ -17,11 +20,10 @@ router.post('/register', (req, res, next) =>{
     })
     .catch(next)
   });
-  //^^^middleware: check supplied username/password are valid(exists after being trimmed),  check username is available(unique)
 
 
 // [POST] students/login
-router.post('/login', checkUsernameExists, (req, res, next) => {
+router.post('/login', validateUser, checkUsernameExists, (req, res, next) => {
     if(bcrypt.compareSync(req.body.password, req.student.password, )) {
         const token = getToken(req.student)
         res.json({
