@@ -23,14 +23,11 @@ async function insertStudent(student) {
   return newStudent // { user_id: 7, username: 'foo', password: 'xxxxxxx' }
 }
 
-// server.get('/api/users', async (req, res) => {
-//     res.json(await getAllUsers())
-//   })
-  
-//   server.post('/api/users', async (req, res) => {
-//     res.status(201).json(await insertUser(req.body))
-//   })
-
+async function getAllRes(student_id) {
+    return await db('classes as c')
+    .join('reservations as r', 'c.class_id', 'r.class_id')
+    .where('r.student_id', student_id)
+}
 
 
 
@@ -42,4 +39,5 @@ module.exports = {
     findClassById,
     findBy,
     insertStudent,
+    getAllRes,
 }

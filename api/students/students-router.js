@@ -59,8 +59,8 @@ router.get('/classes', (req, res, next) => {
 
   student role only
  */
-router.get('/class/:class_id', (req, res, next) => {
-    Student.getClassById(req.params.class_id)
+router.get('/classes/:class_id', (req, res, next) => {
+    Student.findClassById(req.params.class_id)
     .then(selectedClass => {
         res.json(selectedClass)
     })
@@ -73,7 +73,11 @@ router.get('/class/:class_id', (req, res, next) => {
 //   should have access.
 // client role only
 router.get('/:student_id/classes', (req, res, next) => {
-    console.log('get classes by student\'s id is wired')
+    Student.getAllRes(req.params.student_id)
+    .then(reservations => {
+        res.json(reservations)
+    })
+    .catch(next)
 })
 
 // [POST] /api/register/:class_id
