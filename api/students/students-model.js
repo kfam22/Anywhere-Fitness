@@ -57,16 +57,33 @@ async function addResv(student_id, class_id) {
         .first()
 }
 
+async function getResvClass (student_id, class_id){
+    const classes = await getAllResv(student_id)
+    const selectClass = classes.filter(cls => {
+        return cls.class_id === Number(class_id)
+    })
+    return selectClass[0];
+}
 
+async function deleteResv(student_id, class_id){
+    const classToDel = await getResvClass(student_id, class_id)
 
+    await db('classes')
+    .where('class_id', class_id)
+    .update('total_students', classToDel.total_students - 1 )
 
-
-
+    return db('reservations')
+    .where('reservation_id', classToDel.reservation_id)
+    .del()
+}
+  
 module.exports = {
     getClasses,
     findClassById,
     findBy,
     insertStudent,
     getAllResv,
-    addResv
+    addResv,
+    getResvClass,
+    deleteResv
 }

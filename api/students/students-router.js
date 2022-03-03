@@ -9,7 +9,7 @@ const {
     restricted,
     only,
     validateAddResv,
-    checkClassFull } = require('./students-middleware')
+    checkClassFull, } = require('./students-middleware')
 // const { restricted, only } = require("../auth/auth-middleware.js");
 
 // [POST] students/register
@@ -102,13 +102,16 @@ checkClassFull, (req, res, next) => {
     })
     .catch(next)
 })
-// ^^^student can only register for the same class once(add middleware)
 
 
-// [POST] /api/remove/:class_id
+// [DELETE] /api/students/remove/:class_id
 // restricted/ only authd students can register
-router.delete('/remove/:class_id', (req, res, next) => {
-    console.log('remove class is wired')
+router.delete('/remove/:class_id', restricted, only('student'), (req, res, next) => {
+    Student.deleteResv(req.decodedToken.student_id, req.params.class_id)
+    .then(() => {
+        res.json({ message: `class removed`})
+    })
+    .catch(next)
 })
 
 
