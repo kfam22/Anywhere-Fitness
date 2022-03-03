@@ -1,17 +1,39 @@
-const router = require("express").Router();
-const Students = require("./students-model.js");
+const router = require('express').Router();
+const Student = require('./students-model.js');
+const bcrypt = require('bcryptjs');
+const getToken = require('./getStudentToken');
+const { checkUsernameExists } = require('./students-middleware')
 // const { restricted, only } = require("../auth/auth-middleware.js");
 
 // [POST] students/register
 router.post('/register', (req, res, next) =>{
-    console.log('student register is wired')
-})
+    const { username, password } = req.body
+    const hash = bcrypt.hashSync(password, 8)
+    Student.insertStudent({ username, password: hash})
+    .then(newStudent => {
+      res.json({
+          message: `${newStudent.username} successfully registered! `
+      })
+    })
+    .catch(next)
+  });
+  //^^^middleware: check supplied username/password are valid(exists after being trimmed),  check username is available(unique)
 
 
 // [POST] students/login
-router.post('/login', (req, res, next) => {
-    console.log('student login is wired')
+router.post('/login', checkUsernameExists, (req, res, next) => {
+    if(bcrypt.compareSync(req.body.password, req.student.password, )) {
+        const token = getToken(req.student)
+        res.json({
+          status: 200,
+          message: `Welcome ${req.student.username}!`,
+          token
+        })
+      } else {
+        next({ status: 401, message: 'Invalid credentials'})
+      }
 })
+//^^^middleware: check that supplied username/password are valid
 
 /**
   [GET] /api/classes
@@ -20,7 +42,7 @@ router.post('/login', (req, res, next) => {
   should have access.
  */
 router.get('/classes', (req, res, next) => { 
-  Students.getClasses()
+  Student.getClasses()
     .then(classes => {
       res.json(classes);
     })
@@ -33,20 +55,10 @@ router.get('/classes', (req, res, next) => {
   This endpoint is RESTRICTED: only authenticated users
   should have access.
 
-  client role only
-
-  response:
-  status 200
-  [
-    {
-      "class_id": 1,
-      "class_name": "bob"
-      ...class.rest
-    }
-  ]
+  student role only
  */
 router.get('/class/:class_id', (req, res, next) => {
-    Students.getClassById(req.params.class_id)
+    Student.getClassById(req.params.class_id)
     .then(selectedClass => {
         res.json(selectedClass)
     })

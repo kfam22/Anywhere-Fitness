@@ -2,8 +2,8 @@ exports.up = async (knex) => {
   await knex.schema
   .createTable('students', (students) => {
       students.increments('student_id')
-      students.string('username', 50).notNullable().unique()
-      students.string('password', 50).notNullable()
+      students.string('username', 100).notNullable().unique()
+      students.string('password', 100).notNullable()
       students.string('role', 10).defaultTo('student')
     })
     .createTable('instructors', (inst) => {
