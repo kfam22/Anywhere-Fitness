@@ -51,16 +51,16 @@ async function createClass(classDetails){
     return newClass
 }
 
-async function deleteClass(class_id){
-    return db('classes')
-    .where('class_id', class_id)
-    .del()
-}
-
 function updateClass(body){
     return db('classes')
         .where('class_id', body.class_id)
         .update(body)
+}
+
+async function deleteClass(class_id){
+    return db('classes')
+    .where('class_id', class_id)
+    .del()
 }
 
 module.exports = {

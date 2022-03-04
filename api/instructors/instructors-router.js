@@ -93,12 +93,14 @@ router.delete('/delete/:class_id',
     only('instructor'), 
     (req, res, next) => {
         Instructor.deleteClass(req.params.class_id)
-            .then(deleted => {
+            .then(() => {
                 res.json({
-                    message: 'Class was successfully deleted'
+                    message: 'Class deleted!'
                 })
             })
             .catch(next)
 })
+
+// checkClassIdExists, checkInstIdExists
 
 module.exports = router;
