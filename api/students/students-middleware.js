@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../secrets');
 const Student = require('./students-model');
 
 const checkUsernameExists = async (req, res, next) => {
@@ -15,6 +13,20 @@ const checkUsernameExists = async (req, res, next) => {
        next(err)
      }
   }
+
+  const checkClassIdExists = async (req, res, next) => {
+    try{
+        const classId = await Student.findByClassId(req.params.class_id)
+        console.log('find by class id', classId)
+        if (!classId) {
+          next({ status: 401, message: `Class with id ${req.params.class_id} does not exist`})
+        } else {
+          next()
+        }
+     } catch (err) {
+       next(err)
+     }
+}
 
   const validateAddResv = async (req, res, next) => {
       try{
@@ -34,7 +46,7 @@ const checkUsernameExists = async (req, res, next) => {
   }
 
   const checkClassFull = async (req, res, next) => {
-    const requestedClass = await Student.findClassById(req.params.class_id) 
+    const requestedClass = await Student.findByClassId(req.params.class_id) 
     console.log('requestedClass:', requestedClass.max_students)
     if(requestedClass.total_students >= requestedClass.max_students){
         next({
@@ -73,46 +85,11 @@ const checkUsernameExists = async (req, res, next) => {
     }
   }
 
-  const restricted = (req, res, next) => {
-      const token = req.headers.authorization
-      if(!token) {
-          next({
-              status: 401,
-              message: 'token required!'
-          })
-      } else {
-          jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
-              if (err) {
-                  next({
-                      status: 401,
-                      message: 'invalid token'
-                  })
-              } else {
-                //   console.log(decodedToken)
-                  req.decodedToken = decodedToken
-                  next()
-              }
-          })
-      }
-  }
-
-  const only = role => (req, res, next) => {
-      if(req.decodedToken.role === role){
-          next()
-      } else {
-          next({
-              status: 401,
-              message: 'you do not have permissions'
-          })
-      }
-  }
-
   module.exports = {
       checkUsernameExists,
+      checkClassIdExists,
       checkUsernameAvailable,
       validateUser,
-      restricted,
-      only,
       validateAddResv,
       checkClassFull
   }

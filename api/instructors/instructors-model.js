@@ -5,20 +5,6 @@ function getClasses(instructor_id){
         .where('instructor_id', instructor_id)
 }
 
-function findClassById(class_id){
-    return db('classes')
-    .where('class_id', class_id)
-    .first();
-}
-
-// async function getClass(instructor_id, class_id){
-//     const allClasses = await getClasses(instructor_id)
-//     const oneClass = allClasses.filter(eachClass => {
-//         return eachClass.class_id === parseInt(class_id)
-//     })
-//     return oneClass[0]
-// }
-
 //find by username
 function findBy(filter){
     return db('instructors')
@@ -73,7 +59,7 @@ function updateClass(body){
         .update(body)
 }
 
-async function deleteClass(class_id){
+ function deleteClass(class_id){
     return db('classes')
     .where('class_id', class_id)
     .del()
@@ -87,7 +73,5 @@ module.exports = {
     createClass,
     deleteClass,
     updateClass,
-    // getClass,
-    findClassById,
     insertInstructor,
 }

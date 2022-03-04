@@ -4,7 +4,7 @@ function getClasses() {
     return db('classes');
 }
 
-function findClassById(class_id) {
+function findByClassId(class_id) {
     return db('classes')
     .where('class_id', class_id)
     .first();
@@ -15,9 +15,6 @@ function findBy(user) {
     .where('username', user)
     .first();
 }
-
- // WITH POSTGRES WE CAN PASS A "RETURNING ARRAY" AS 2ND ARGUMENT TO knex.insert/update
-  // AND OBTAIN WHATEVER COLUMNS WE NEED FROM THE NEWLY CREATED/UPDATED RECORD
 
 async function insertStudent(student) {
   const [newStudent] = await db('students').insert(student, ['student_id', 'username', 'password', 'role'])
@@ -79,7 +76,7 @@ async function deleteResv(student_id, class_id){
   
 module.exports = {
     getClasses,
-    findClassById,
+    findByClassId,
     findBy,
     insertStudent,
     getAllResv,

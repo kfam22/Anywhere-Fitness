@@ -2,18 +2,20 @@ const router = require('express').Router();
 const Instructor = require('./instructors-model');
 const bcrypt = require('bcryptjs');
 const getInstructorToken = require('./getInstructorToken');
+const { restricted, only } = require('../auth/auth-middleware')
 const { 
     checkUsernameExists,
     checkInstIdExists,
     checkClassIdExists,
     validateUser,
-    checkUsernameAvailable,
-    restricted, 
-    only 
+    checkUsernameAvailable 
 } = require('./instructors-middleware')
 
 // [POST] instructors/register
-router.post('/register', validateUser, checkUsernameAvailable, (req, res, next) =>{
+router.post('/register', 
+validateUser, 
+checkUsernameAvailable, 
+(req, res, next) =>{
     const { username, password } = req.body
     const hash = bcrypt.hashSync(password, 8)
     Instructor.insertInstructor({ username, password: hash})
@@ -26,7 +28,10 @@ router.post('/register', validateUser, checkUsernameAvailable, (req, res, next) 
   });
 
 //[POST] /login instructor login
-router.post('/login', validateUser, checkUsernameExists, (req, res, next) => {
+router.post('/login', 
+validateUser, 
+checkUsernameExists, 
+(req, res, next) => {
     console.log("bcrypt", bcrypt.compareSync(req.body.password, req.instructor.password))
     if(bcrypt.compareSync(req.body.password, req.instructor.password)) {
         const token = getInstructorToken(req.instructor)
@@ -63,7 +68,7 @@ restricted,
 only('instructor'),
 checkClassIdExists,
  (req, res, next) => {
-    Instructor.findClassById(req.params.class_id)
+    Instructor.findByClassId(req.params.class_id)
         .then(selectedClass => {
             res.json(selectedClass)
         })
@@ -111,7 +116,5 @@ router.delete('/delete/:class_id',
             })
             .catch(next)
 })
-
-// checkClassIdExists, checkInstIdExists
 
 module.exports = router;
