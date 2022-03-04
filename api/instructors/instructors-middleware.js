@@ -14,20 +14,6 @@ const checkUsernameExists = async (req, res, next) => {
      } catch (err) {
        next(err)
      }
-    // Instructor.findBy(req.body.username)
-    //     .then(instructor => {
-    //         if(instructor) {
-    //             req.instructor = instructor
-    //             next()
-    //         } else {
-    //             next({
-    //                 message: 'incorrect username or password'
-    //             })
-    //         }
-    //     })
-    //     .catch(err => {
-    //         next(err)
-    //     })
 }
 
 function validateUser(req, res, next) {
@@ -60,20 +46,21 @@ function validateUser(req, res, next) {
 
 const restricted = (req, res, next) => {
     const token = req.headers.authorization
-    if(!token){
+    if(!token) {
         next({
-            message: 'Token is required!'
+            status: 401,
+            message: 'token required!'
         })
     } else {
-        jwt.verify(token, JWT_SECRET, (err, decoded) => {
-            if(err) {
+        jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
+            if (err) {
                 next({
                     status: 401,
-                    message: err.message
+                    message: 'invalid token'
                 })
             } else {
-                console.log('what is req decodedJWT', req.decodedJWT);
-                req.decodedJWT = decoded
+              //   console.log(decodedToken)
+                req.decodedToken = decodedToken
                 next()
             }
         })
@@ -81,11 +68,12 @@ const restricted = (req, res, next) => {
 }
 
 const only = role => (req, res, next) => {
-    if(req.decodedJWT.role === role){
+    if(req.decodedToken.role === role){
         next()
     } else {
-        res.json({
-            message: 'You do not have permission to access this'
+        next({
+            status: 401,
+            message: 'you do not have permissions'
         })
     }
 }

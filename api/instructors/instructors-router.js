@@ -30,6 +30,7 @@ router.post('/login', validateUser, checkUsernameExists, (req, res, next) => {
         const token = getInstructorToken(req.instructor)
             res.json({
                 message: `Welcome ${req.instructor.username}!`, 
+                instructor_id: `${req.instructor.instructor_id}`,
                 token
             })
     } else {
@@ -56,15 +57,15 @@ router.get('/:instructor_id/classes/',
 //[GET] /classes/:class_id *restricted for instructor*
 router.get('/classes/:class_id', restricted, (req, res, next) => {
     Instructor.findClassById(req.params.class_id)
-        .then(aClass => {
-            res.json(aClass)
+        .then(selectedClass => {
+            res.json(selectedClass)
         })
         .catch(next)
 })
 
 
 //[POST] /create *restricted for instructor to create new class*
-router.post('/create', 
+router.post('/add', 
     restricted, 
     only('instructor'), 
     (req, res, next) => { 

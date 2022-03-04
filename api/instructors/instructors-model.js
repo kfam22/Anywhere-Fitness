@@ -36,8 +36,8 @@ async function insertInstructor(instructor) {
         return newInstructor
   }
 
-async function createClass(newClass){
-    const [newlyCreatedClass] = await db('classes').insert(newClass, [
+async function createClass(classDetails){
+    const [newClass] = await db('classes').insert(classDetails, [
         'class_id',
         'class_name',
         'class_start_time',
@@ -48,7 +48,7 @@ async function createClass(newClass){
         'max_students',
         'instructor_id'
     ])
-    return newlyCreatedClass
+    return newClass
 }
 
 async function deleteClass(class_id){
