@@ -16,6 +16,34 @@ const checkUsernameExists = async (req, res, next) => {
      }
 }
 
+const checkInstIdExists = async (req, res, next) => {
+    try{
+        const instructorId = await Instructor.findByInstId(req.params.instructor_id)
+        console.log('find by instructor id', instructorId)
+        if (!instructorId) {
+          next({ status: 401, message: 'Invalid instructor id'})
+        } else {
+          next()
+        }
+     } catch (err) {
+       next(err)
+     }
+}
+
+const checkClassIdExists = async (req, res, next) => {
+    try{
+        const classId = await Instructor.findByClassId(req.params.class_id)
+        console.log('find by class id', classId)
+        if (!classId) {
+          next({ status: 401, message: `Class with id ${req.params.class_id} does not exist`})
+        } else {
+          next()
+        }
+     } catch (err) {
+       next(err)
+     }
+}
+
 function validateUser(req, res, next) {
     if(req.body.username
     && req.body.username.trim()
@@ -81,6 +109,8 @@ const only = role => (req, res, next) => {
 
 module.exports = {
     checkUsernameExists,
+    checkInstIdExists,
+    checkClassIdExists,
     validateUser,
     checkUsernameAvailable,
     restricted,

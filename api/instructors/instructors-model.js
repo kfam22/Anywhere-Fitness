@@ -19,10 +19,26 @@ function findClassById(class_id){
 //     return oneClass[0]
 // }
 
-function findBy(user){
+//find by username
+function findBy(filter){
     return db('instructors')
     .select('instructor_id', 'username', 'role', 'password')
-    .where('username', user)
+    .where('username', filter)
+    .first();
+}
+
+//find by instructor id
+function findByInstId(filter){
+    return db('instructors')
+    .select('instructor_id', 'username', 'role', 'password')
+    .where('instructor_id', filter)
+    .first();
+}
+
+//find by class id
+function findByClassId(filter){
+    return db('classes')
+    .where('class_id', filter)
     .first();
 }
 
@@ -66,6 +82,8 @@ async function deleteClass(class_id){
 module.exports = {
     getClasses,
     findBy,
+    findByInstId,
+    findByClassId,
     createClass,
     deleteClass,
     updateClass,

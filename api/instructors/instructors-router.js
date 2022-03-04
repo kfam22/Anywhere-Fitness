@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const getInstructorToken = require('./getInstructorToken');
 const { 
     checkUsernameExists,
+    checkInstIdExists,
+    checkClassIdExists,
     validateUser,
     checkUsernameAvailable,
     restricted, 
@@ -38,14 +40,15 @@ router.post('/login', validateUser, checkUsernameExists, (req, res, next) => {
             message: 'Invalid login'
         })
     }
-
     next()
 })
 
 
 //[GET] /:instructor_id/classes *get all classes by instructor_id*
 router.get('/:instructor_id/classes/', 
-    restricted, only('instructor'), 
+    restricted, 
+    only('instructor'),
+    checkInstIdExists,
     (req, res, next) => { 
         Instructor.getClasses(req.params.instructor_id)
             .then(myClasses => {
@@ -55,7 +58,11 @@ router.get('/:instructor_id/classes/',
         })
 
 //[GET] /classes/:class_id *restricted for instructor*
-router.get('/classes/:class_id', restricted, (req, res, next) => {
+router.get('/classes/:class_id', 
+restricted,
+only('instructor'),
+checkClassIdExists,
+ (req, res, next) => {
     Instructor.findClassById(req.params.class_id)
         .then(selectedClass => {
             res.json(selectedClass)
@@ -77,7 +84,10 @@ router.post('/add',
         })
 
 //[PUT] /:instructor_id/update/:class_id *restricted for instructor to update/modify classes*
-router.put('/update', (req, res, next) => {
+router.put('/update',
+restricted,
+only('instructor'),
+ (req, res, next) => {
     Instructor.updateClass(req.body)
         .then(() => {
             res.json({
@@ -90,7 +100,8 @@ router.put('/update', (req, res, next) => {
 //[DELETE] /delete/class_id *restricted for instructor to delete a class*
 router.delete('/delete/:class_id', 
     restricted, 
-    only('instructor'), 
+    only('instructor'),
+    checkClassIdExists, 
     (req, res, next) => {
         Instructor.deleteClass(req.params.class_id)
             .then(() => {
