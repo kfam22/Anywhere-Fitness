@@ -16,7 +16,6 @@ const { JWT_SECRET } = require('../secrets')
                       message: 'invalid token'
                   })
               } else {
-                //   console.log(decodedToken)
                   req.decodedToken = decodedToken
                   next()
               }

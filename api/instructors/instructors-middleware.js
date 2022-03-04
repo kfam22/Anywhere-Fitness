@@ -17,7 +17,7 @@ const checkUsernameExists = async (req, res, next) => {
 const checkInstIdExists = async (req, res, next) => {
     try{
         const instructorId = await Instructor.findByInstId(req.params.instructor_id)
-        console.log('find by instructor id', instructorId)
+        findByClassId('find by instructor id', instructorId)
         if (!instructorId) {
           next({ status: 401, message: 'Invalid instructor id'})
         } else {
@@ -31,7 +31,6 @@ const checkInstIdExists = async (req, res, next) => {
 const checkClassIdExists = async (req, res, next) => {
     try{
         const classId = await Instructor.findByClassId(req.params.class_id)
-        console.log('find by class id', classId)
         if (!classId) {
           next({ status: 401, message: `Class with id ${req.params.class_id} does not exist`})
         } else {

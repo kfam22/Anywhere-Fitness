@@ -32,7 +32,6 @@ router.post('/login',
 validateUser, 
 checkUsernameExists, 
 (req, res, next) => {
-    console.log("bcrypt", bcrypt.compareSync(req.body.password, req.instructor.password))
     if(bcrypt.compareSync(req.body.password, req.instructor.password)) {
         const token = getInstructorToken(req.instructor)
             res.json({

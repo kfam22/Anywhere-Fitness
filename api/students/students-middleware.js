@@ -17,7 +17,6 @@ const checkUsernameExists = async (req, res, next) => {
   const checkClassIdExists = async (req, res, next) => {
     try{
         const classId = await Student.findByClassId(req.params.class_id)
-        console.log('find by class id', classId)
         if (!classId) {
           next({ status: 401, message: `Class with id ${req.params.class_id} does not exist`})
         } else {
@@ -47,7 +46,6 @@ const checkUsernameExists = async (req, res, next) => {
 
   const checkClassFull = async (req, res, next) => {
     const requestedClass = await Student.findByClassId(req.params.class_id) 
-    console.log('requestedClass:', requestedClass.max_students)
     if(requestedClass.total_students >= requestedClass.max_students){
         next({
            message: `${requestedClass.class_name} is full, Please choose a different class`
