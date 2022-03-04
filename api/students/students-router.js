@@ -10,7 +10,6 @@ const {
     only,
     validateAddResv,
     checkClassFull, } = require('./students-middleware')
-// const { restricted, only } = require("../auth/auth-middleware.js");
 
 // [POST] students/register
 router.post('/register', validateUser, checkUsernameAvailable, (req, res, next) =>{
@@ -39,14 +38,8 @@ router.post('/login', validateUser, checkUsernameExists, (req, res, next) => {
         next({ status: 401, message: 'Invalid credentials'})
       }
 })
-//^^^middleware: check that supplied username/password are valid
 
-/**
-  [GET] /api/classes
-
-  This endpoint is OPEN: all users
-  should have access.
- */
+  // [GET] /classes
 router.get('/classes', (req, res, next) => { 
   Student.getClasses()
     .then(classes => {
@@ -55,14 +48,8 @@ router.get('/classes', (req, res, next) => {
     .catch(next);
 });
 
-/**
-  [GET] /api/classes/:class_id
 
-  This endpoint is RESTRICTED: only authenticated users
-  should have access.
-
-  student role only
- */
+  // [GET] /classes/:class_id
 router.get('/classes/:class_id', (req, res, next) => {
     Student.findClassById(req.params.class_id)
     .then(selectedClass => {
@@ -71,11 +58,7 @@ router.get('/classes/:class_id', (req, res, next) => {
     .catch(next)
 });
 
-// [GET] /api/student_id/classes
-
-//   This endpoint is RESTRICTED: only authenticated students
-//   should have access.
-// client role only
+// [GET] /student_id/classes
 router.get('/:student_id/classes', (req, res, next) => {
     Student.getAllResv(req.params.student_id)
     .then(reservations => {
@@ -84,8 +67,7 @@ router.get('/:student_id/classes', (req, res, next) => {
     .catch(next)
 })
 
-// [POST] /api/register/:class_id
-// restricted/ only authd students can register
+// [POST] /add/:class_id
 router.post('/add/:class_id', 
 restricted, 
 only('student'), 
@@ -104,8 +86,7 @@ checkClassFull, (req, res, next) => {
 })
 
 
-// [DELETE] /api/students/remove/:class_id
-// restricted/ only authd students can register
+// [DELETE] /remove/:class_id
 router.delete('/remove/:class_id', restricted, only('student'), (req, res, next) => {
     Student.deleteResv(req.decodedToken.student_id, req.params.class_id)
     .then(() => {

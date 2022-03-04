@@ -8,8 +8,8 @@ exports.up = async (knex) => {
     })
     .createTable('instructors', (inst) => {
       inst.increments('instructor_id')
-      inst.string('username', 50).notNullable().unique()
-      inst.string('password', 50).notNullable()
+      inst.string('username', 100).notNullable().unique()
+      inst.string('password', 100).notNullable()
       inst.string('role', 10).defaultTo('instructor')
     })
     .createTable('classes', (classes) => {

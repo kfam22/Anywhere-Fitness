@@ -13,7 +13,7 @@ function findClassById(class_id) {
 function findBy(user) {
     return db('students')
     .where('username', user)
-    .first()
+    .first();
 }
 
  // WITH POSTGRES WE CAN PASS A "RETURNING ARRAY" AS 2ND ARGUMENT TO knex.insert/update
@@ -21,7 +21,7 @@ function findBy(user) {
 
 async function insertStudent(student) {
   const [newStudent] = await db('students').insert(student, ['student_id', 'username', 'password', 'role'])
-  return newStudent // { user_id: 7, username: 'foo', password: 'xxxxxxx' }
+  return newStudent
 }
 
 async function getAllResv(student_id) {
