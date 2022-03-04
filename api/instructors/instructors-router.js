@@ -52,7 +52,7 @@ router.get('/:instructor_id/classes/',
                 res.json(myClasses)
             })
             .catch(next)
-})
+        })
 
 //[GET] /classes/:class_id *restricted for instructor*
 router.get('/classes/:class_id', restricted, (req, res, next) => {
@@ -61,7 +61,7 @@ router.get('/classes/:class_id', restricted, (req, res, next) => {
             res.json(selectedClass)
         })
         .catch(next)
-})
+    })
 
 
 //[POST] /create *restricted for instructor to create new class*
@@ -74,23 +74,18 @@ router.post('/add',
                 res.json(newClass)
             })
             .catch(next)
-})
+        })
 
 //[PUT] /:instructor_id/update/:class_id *restricted for instructor to update/modify classes*
 router.put('/update', (req, res, next) => {
-    // res.json({ 
-    //     message: 'class was updated'
-    // })
-
     Instructor.updateClass(req.body)
-        .then(updatedClass => {
-            // console.log('what is updatedClass', updatedClass);
+        .then(() => {
             res.json({
-                message: 'Class was successfully updated!'
+                message: 'Class updated!'
             })
         })
         .catch(next)
-})
+    })
 
 //[DELETE] /delete/class_id *restricted for instructor to delete a class*
 router.delete('/delete/:class_id', 
