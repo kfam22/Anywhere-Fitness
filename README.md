@@ -3,7 +3,8 @@ Quick View classes(unrestricted): https://anywhere-fitness-04.herokuapp.com/api/
 
 [GET]/students/classes *un-restricted
 Returns the following format:
-[
+
+```[
   {
     "class_id": 1,
     "class_name": "After Work HIIT",
@@ -28,7 +29,7 @@ Returns the following format:
     "max_students": 8,
     "instructor_id": 2
   } 
-]
+] ```
 
 Student’s Login/Register Endpoint
 [POST]/students/register
