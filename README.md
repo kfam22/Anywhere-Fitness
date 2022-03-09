@@ -1,4 +1,4 @@
-Student/Instructor Portal base url:https://anywhere-fitness-04.herokuapp.com/api
+Student/Instructor Portal base url:https://anywhere-fitness-04.herokuapp.com/api <br/>
 Quick View classes(unrestricted): https://anywhere-fitness-04.herokuapp.com/api/students/classes
 
 [GET]/students/classes *un-restricted
