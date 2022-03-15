@@ -53,7 +53,7 @@ Returns the following:
 ```
 [POST]</br>
 api/students/login </br>
-Requires in req.body with the following format:
+Requires req.body with the following format:
 
 ```
 { 
