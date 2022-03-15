@@ -1,7 +1,8 @@
 Student/Instructor Portal base url:https://anywhere-fitness-04.herokuapp.com/api <br/>
 Quick View classes (JSON): https://anywhere-fitness-04.herokuapp.com/api/students/classes
 
-[GET]/students/classes (no auth needed)
+[GET]</br>
+api/students/classes (no auth needed)
 Returns the following format:
 
 ```[
@@ -32,9 +33,9 @@ Returns the following format:
 ]
 ```
 
-Student’s Login/Register Endpoint
-[POST]/students/register
-Takes body with the following format:
+[POST]</br>
+api/students/register </br>
+Requires body with the following format:
 
 ```
 {
@@ -42,16 +43,17 @@ Takes body with the following format:
 	"password": "123"
 }
 ```
-username & password must be all strings
-username must be unique
+*username & password must be strings
+*username must be unique
 Returns the following:
 ```
 {
 	"message": "test successfully registered!"
 }
 ```
-[POST]/students/login
-Takes in req.body with the following format:
+[POST]</br>
+api/students/login </br>
+Requires in req.body with the following format:
 
 ```
 { 
@@ -59,19 +61,20 @@ Takes in req.body with the following format:
 	"password": "123"
 }
 ```
-will return the following:
+returns the following:
 ```
 {
 	"message": "Welcome test!",
 	"token": "string"
 }
 ```
-JWT (token) expires in 1 day
+JWT (token) expires in 1 day</br>
 
-Student Endpoints *restricted
+Students Endpoints *restricted
 
-[GET]/students/classes/:class_id
-restricted endpoint - gets an individual class by class_id
+[GET]</br>
+api/students/classes/:class_id </br>
+restricted endpoint - gets an individual class by class_id </br>
 Returns the following:
 
 ```
@@ -90,8 +93,9 @@ Returns the following:
 	}
 ]
 ```
-[GET]/students/:student_id/classes
-restricted endpoint - gets all classes that are reserved by student id
+[GET]</br>
+api/students/:student_id/classes </br>
+restricted endpoint - gets all classes that are reserved by student id </br>
 Returns the following:
 ```
 [
@@ -110,37 +114,39 @@ Returns the following:
 ]
 ```
 
-[POST]/students/add/:class_id
-restricted endpoint - adds a new class to the student’s reservation list by the class_id
-doesn't require a body
-total class size will increment by 1 each time a student reserves a class
+[POST]</br>
+api/students/add/:class_id </br>
+restricted endpoint - adds a new class to the student’s reservation list by the class_id </br>
+*no request body needed </br>
+total class size will increment by 1 each time a student adds a class </br>
 will return the following:
 ```
 {
     "message": "reservation for Balance and Stability successful"
 }
 ```
-[DELETE]/students/:student_id/remove/class_id
-restricted endpoint - deletes a class reservation for the studenr by a class id
-total class size will decrement by 1 whenever a student deletes the class from their reservation list
-don’t need to send anything - it will need to be routed properly
+[DELETE]</br>
+api/students/:student_id/remove/class_id </br>
+restricted endpoint - removes a class reservation for the student by a class id </br>
+total class size will decrement by 1 whenever a student deletes the class from their reservations </br>
+*no request body needed </br>
 will return the following:
 ```
 {
 	"message": "class removed"
 }
 ```
-Instructors Endpoints (restricted)
-Instructors Log-In Credentials
-use the following instructors credentials to log-in:
+Instructors Endpoints (restricted) </br>
+Instructors Log-In Credentials</br>
 ```
 { "username": "Stella", "password": "123" }
 { "username": "Vivienne", "password": "123" }
 { "username": "Kayla", "password": "123" }
 ```
-[GET]/instructors/login
-restricted endpoint for instructors only
-Takes body with the following format:
+[GET]</br>
+api/instructors/login</br>
+restricted endpoint for instructors only </br>
+Requires body with the following format:
 ```
 { 
 	"username": "Stella", 
@@ -155,9 +161,10 @@ Returns the following:
     "token": "string"
 }
 ```
-[GET]/instructors/:instructor_id/classes
-restricted endpoint for only instructors
-gets all classes by instructor
+[GET]</br>
+api/instructors/:instructor_id/classes </br>
+restricted endpoint for instructors only </br>
+gets all classes by instructor id </br>
 Returns the following:
 ```
 [
@@ -188,9 +195,10 @@ Returns the following:
 	}
 ]
 ```
-[GET] /instructors/classes/:class_id
-restricted endpoint for instructors only
-get a class by id
+[GET]</br>
+api/instructors/classes/:class_id </br>
+restricted endpoint for instructors only </br>
+gets one class by id </br>
 Returns the following:
 ```
 [
@@ -208,14 +216,15 @@ Returns the following:
 	}
 ]
 ```
-[POST]/instructors/add
-restricted endpoint for instructors only
-create a new class
-class start time format: HH:MM
-class duration format (minutes): must be an integer
-max class size format: must be an integer
-class level format: must be a string
-Takes in body with the following format:
+[POST]</br>
+api/instructors/add </br>
+restricted endpoint for instructors only </br>
+create a new class </br>
+class start time format: HH:MM </br>
+class duration format (minutes): must be an integer </br>
+max class size format: must be an integer </br>
+class level format: must be a string </br>
+Requires body with the following format:
 ```
 {
 	"class_name": "New Class",
@@ -242,10 +251,11 @@ will return the following:
 	"instructor_id": "1"
 }
 ```
-[PUT]/instructors/update
-restricted endpoint for instructors only
-instructor can modify a class by the class id
-Takes in body with the following format:
+[PUT] </br>
+api/instructors/update </br>
+restricted endpoint for instructors only </br>
+instructor can edit a class by the class id </br>
+Requires body with the following format:
 ```
 {
     "class_id": 12,
@@ -265,9 +275,10 @@ will return the following:
 	"message": "Class updated!"
 }
 ```
-[DELETE]/instructors/delete/:class_id
-restricted endpoint for instructors only
-instructor deletes a class by class id
+[DELETE]</br>
+api/instructors/delete/:class_id </br>
+restricted endpoint for instructors only </br>
+instructor deletes a class by class id </br>
 Return the following:
 ```
 {
