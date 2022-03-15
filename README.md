@@ -1,7 +1,7 @@
 Student/Instructor Portal base url:https://anywhere-fitness-04.herokuapp.com/api <br/>
-Quick View classes(unrestricted): https://anywhere-fitness-04.herokuapp.com/api/students/classes
+Quick View classes (JSON): https://anywhere-fitness-04.herokuapp.com/api/students/classes
 
-[GET]/students/classes *un-restricted
+[GET]/students/classes (no auth needed)
 Returns the following format:
 
 ```[
@@ -36,9 +36,10 @@ Student’s Login/Register Endpoint
 [POST]/students/register
 Takes body with the following format:
 
-```{
-"username": "test",
-"password": "123"
+```
+{
+	"username": "test",
+	"password": "123"
 }
 ```
 username & password must be all strings
@@ -77,15 +78,15 @@ Returns the following:
 [
 	{
 		 "class_id": 2,
-    "class_name": "Balance and Stability",
-    "class_start_time": "05:30:00",
-    "class_category": "Yoga",
-    "class_duration": 35,
-    "class_level": "beginner",
-    "class_location": "uptown studio",
-    "total_students": 4,
-    "max_students": 8,
-    "instructor_id": 2
+   	 "class_name": "Balance and Stability",
+    	"class_start_time": "05:30:00",
+   	 "class_category": "Yoga",
+   	 "class_duration": 35,
+   	 "class_level": "beginner",
+   	 "class_location": "uptown studio",
+   	 "total_students": 4,
+   	 "max_students": 8,
+   	 "instructor_id": 2
 	}
 ]
 ```
@@ -174,16 +175,16 @@ Returns the following:
 		"max_class_size": 8
 		},
 		{
-    "instructor_id": 2,
+   		 "instructor_id": 2,
 		"class_id": 4,
-    "class_name": "Serious Sculpt",
-    "class_start_time": "03:00:00",
-    "class_category": "Strength",
-    "class_duration": 120,
-    "class_level": "advanced",
-    "class_location": "downtown studio",
-    "total_students": 4,
-    "max_students": 8,
+    		"class_name": "Serious Sculpt",
+   		 "class_start_time": "03:00:00",
+   		 "class_category": "Strength",
+    		"class_duration": 120,
+    		"class_level": "advanced",
+    		"class_location": "downtown studio",
+    		"total_students": 4,
+   		"max_students": 8,
 	}
 ]
 ```
